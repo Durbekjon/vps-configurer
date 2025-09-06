@@ -3,16 +3,6 @@
 set -e  # xato bo'lsa, script to'xtaydi
 
 # ------------------------
-# Load environment variables from .env file
-# ------------------------
-if [ -f ".env" ]; then
-    log "Loading environment variables from .env file..."
-    export $(grep -v '^#' .env | xargs)
-else
-    log "No .env file found, using default values..."
-fi
-
-# ------------------------
 # Configuration and Logging
 # ------------------------
 LOG_FILE="/var/log/vps-setup.log"
@@ -27,6 +17,16 @@ sudo chown $USER:$USER "$LOG_FILE"
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
 }
+
+# ------------------------
+# Load environment variables from .env file
+# ------------------------
+if [ -f ".env" ]; then
+    log "Loading environment variables from .env file..."
+    export $(grep -v '^#' .env | xargs)
+else
+    log "No .env file found, using default values..."
+fi
 
 log "=== 🚀 Server setup is starting... ==="
 log "Database password will be generated and saved to: /home/$USER/.db_credentials"
